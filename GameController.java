@@ -1,75 +1,53 @@
 import java.util.*;
-
 public class GameController {
-    public int p1score = 0;
-    public int p2score = 0;
-    private int score = 2;
-    
-    String ResisterName(){
+    static int pos = 0;
+    static boolean flag = true;
+    public static void main(String[] args) {
+        for(int i=0;i<5;i++){
+            System.out.println("あなたの出目 : " + RollDice());
+            int ad = adPiece();
+            STofField(ad);
+            if(!flag){
+                pos = 0;
+                flag = true;
+            }
+        }
+    }
+
+    static char RollDice(){
+        char[] spot = {'1','2','3','4','×','×'};
+        Random rand = new Random();
+        int num = rand.nextInt(6);
+        return spot[num];
+    }
+
+    static int adPiece(){
         Scanner sc = new Scanner(System.in);
-        System.out.println("名前を入力してください : ");
-        String name = sc.nextLine();
-        sc.close();
-        return name;
-    }
-
-    String ChooseCard(){
-        return "a";
-    }
-
-    int Judge(int choice1,int choice2){
-        if(choice1==0){
-           if(choice2==1||choice2==4){
-               return 1;
-           }else if(choice2==0){
-                return 0;
-           }else{
-               return -1;
-           }
-        }else if(choice1==1){
-            if(choice2==2||choice2==4){
-                return 1;
-            }else if(choice2==1){
-                return 0;
-            }else{
-                return -1;
-            }
-        }else if(choice1==2){
-            if(choice2==0||choice2==4){
-                return 1;
-            }else if(choice2==2){
-                return 0;
-            }else{
-                return -1;
-            }
-        }else if(choice1==3){
-            if(choice2==4){
-                return -1;
-            }else if(choice2==3){
-                return 0;
-            }else{
-                return 1;
-            }
-        }else{
-            if(choice2==3){
-                return 1;
-            }else if(choice2==4){
-                return 0;
-            }else{
-                return -1;
-            }
+        System.out.println("何マス駒を進めますか : ");
+        int ad = sc.nextInt();
+        while(ad<1||ad>4){
+            System.out.println("不正な値です。再度入力してください : ");
+            ad = sc.nextInt();
         }
+        return ad;
     }
 
-    void Score(int judge){
-        if(judge==1){
-            p1score += score;
-            score = 2;
-        }else if(judge==0){
-            score += 2;
+    static void STofField(int ad){
+        String field = ". . . . . . . . . .";
+        StringBuilder sb = new StringBuilder();
+        sb.append(field);
+        pos += ad;
+        if(pos>=9){
+            sb.replace(18, 19, "|");
+            System.out.println("S                 G");
+            System.out.println(sb.toString());
+            System.out.println("ゴール!!");
+            flag = false;
         }else{
-            p2score += score;
-            score = 2;
+            sb.replace(2*pos, 2*pos+1, "|");
+            System.out.println("S                 G");
+            System.out.println(sb.toString());
         }
-    }
+    } 
+   
 }
